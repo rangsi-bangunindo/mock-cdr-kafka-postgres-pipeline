@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+
+# Virtual env
+.venv/
+env/
+venv/
+ENV/
+
+# Byte-compiled / compiled
+*.so
+*.dll
+*.dylib
+
+# Logs and caches
+*.log
+*.out
+*.err
+.cache/
+.mypy_cache/
+.pytest_cache/
+coverage/
+htmlcov/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.iml
+
+# Environments
+.env
+.env.local
+.env.*.local
+
+# Data / DB
+*.db
+*.sqlite3
+
+# Distribution / Packaging
+build/
+dist/
+*.egg-info/
+
+# Docker
+*.pid

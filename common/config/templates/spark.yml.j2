@@ -1,0 +1,24 @@
+kafka:
+  bootstrap_servers: "{{ KAFKA_BROKER }}"
+  topic_raw: "{{ KAFKA_TOPIC_RAW }}"
+  topic_flat: "{{ KAFKA_TOPIC_FLAT }}"
+  topic_error: "{{ KAFKA_TOPIC_ERROR }}"
+  starting_offsets: "{{ SPARK_READ_STARTING_OFFSETS }}"
+  max_offsets_per_trigger: {{ SPARK_MAX_OFFSETS_PER_TRIGGER }}
+
+spark:
+  checkpoint_dir: "{{ SPARK_CHECKPOINT_DIR }}"
+  watermark_minutes: {{ SPARK_WATERMARK_MINUTES }}
+  window_minutes: {{ SPARK_WINDOW_MINUTES }}
+
+postgres:
+  host: "{{ POSTGRES_HOST }}"
+  port: {{ POSTGRES_PORT }}
+  database: "{{ POSTGRES_DB }}"
+  schema: "{{ POSTGRES_SCHEMA }}"
+  user: "{{ POSTGRES_USER }}"
+  password: "{{ POSTGRES_PASSWORD }}"
+  jdbc_options: "{{ POSTGRES_JDBC_OPTIONS }}"
+
+logging:
+  config_path: "/opt/app/config/logging.json"

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CDR",
+  "type": "object",
+  "properties": {
+    "call_id": { "type": "string", "format": "uuid" },
+    "caller": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "location": { "type": "string" }
+      },
+      "required": ["id", "location"]
+    },
+    "callee": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "location": { "type": "string" }
+      },
+      "required": ["id", "location"]
+    },
+    "call_details": {
+      "type": "object",
+      "properties": {
+        "start_time": { "type": "string", "format": "date-time" },
+        "end_time": { "type": "string", "format": "date-time" },
+        "duration_sec": { "type": "integer" },
+        "bytes_used": { "type": "integer" },
+        "service_type": { "type": "string", "enum": ["voice", "sms", "data"] }
+      },
+      "required": ["start_time", "end_time", "duration_sec", "bytes_used", "service_type"]
+    },
+    "network": {
+      "type": "object",
+      "properties": {
+        "cell_id": { "type": "string" },
+        "quality": { "type": "string", "enum": ["good", "fair", "poor"] }
+      },
+      "required": ["cell_id", "quality"]
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "generated_at": { "type": "string", "format": "date-time" },
+        "source": { "type": "string" }
+      },
+      "required": ["generated_at", "source"]
+    }
+  },
+  "required": ["call_id", "caller", "callee", "call_details", "network", "metadata"]
+}

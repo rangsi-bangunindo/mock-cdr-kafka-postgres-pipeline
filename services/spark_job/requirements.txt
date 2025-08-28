@@ -1,0 +1,4 @@
+psycopg2-binary==2.9.10
+py4j==0.10.9.9
+pyspark==4.0.0
+PyYAML==6.0.2

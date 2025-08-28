@@ -1,0 +1,17 @@
+kafka:
+  bootstrap_servers: "{{ KAFKA_BROKER }}"
+  topic_raw: "{{ KAFKA_TOPIC_RAW }}"
+  topic_flat: "{{ KAFKA_TOPIC_FLAT }}"
+  topic_error: "{{ KAFKA_TOPIC_ERROR }}"
+  security_protocol: "{{ KAFKA_SECURITY_PROTOCOL }}"
+
+tuning:
+  linger_ms: {{ PRODUCER_LINGER_MS }}
+  batch_bytes: {{ PRODUCER_BATCH_BYTES }}
+  compression: "{{ PRODUCER_COMPRESSION }}"
+  retries: {{ PRODUCER_RETRIES }}
+  enable_idempotence: {{ PRODUCER_ENABLE_IDEMPOTENCE | lower }}
+  max_in_flight: {{ PRODUCER_MAX_IN_FLIGHT }}
+
+logging:
+  config_path: "/opt/app/config/logging.json"

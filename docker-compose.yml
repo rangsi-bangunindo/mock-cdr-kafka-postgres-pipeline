@@ -1,0 +1,52 @@
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    hostname: cdr-zookeeper
+    container_name: cdr-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "22181:2181"  # avoid conflict with local 2181
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    hostname: cdr-kafka
+    container_name: cdr-kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+
+  producer:
+    build:
+      context: .
+      dockerfile: services/producer/Dockerfile
+    container_name: cdr-producer
+    depends_on:
+      - kafka
+    env_file: .env
+    volumes:
+      - ./common:/opt/app/common:ro
+      - ./generated-config/producer:/opt/app/config
+    ports:
+      - "8080:8080"
+
+  generator:
+    build:
+      context: .
+      dockerfile: services/data_generator/Dockerfile
+    container_name: cdr-generator
+    depends_on:
+      - producer
+    env_file: .env
+    volumes:
+      - ./common:/opt/app/common:ro
+      - ./generated-config/generator:/opt/app/config
+    ports:
+      - "8000:8000"
