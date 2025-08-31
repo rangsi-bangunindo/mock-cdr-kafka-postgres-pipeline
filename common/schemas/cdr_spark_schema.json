@@ -1,1 +1,74 @@
-{}
+{
+  "type": "struct",
+  "fields": [
+    {
+      "name": "call_id",
+      "type": "string",
+      "nullable": false,
+      "metadata": {}
+    },
+    {
+      "name": "caller",
+      "type": {
+        "type": "struct",
+        "fields": [
+          {"name": "id", "type": "string", "nullable": false, "metadata": {}},
+          {"name": "location", "type": "string", "nullable": false, "metadata": {}}
+        ]
+      },
+      "nullable": true,
+      "metadata": {}
+    },
+    {
+      "name": "callee",
+      "type": {
+        "type": "struct",
+        "fields": [
+          {"name": "id", "type": "string", "nullable": false, "metadata": {}},
+          {"name": "location", "type": "string", "nullable": false, "metadata": {}}
+        ]
+      },
+      "nullable": true,
+      "metadata": {}
+    },
+    {
+      "name": "call_details",
+      "type": {
+        "type": "struct",
+        "fields": [
+          {"name": "start_time", "type": "timestamp", "nullable": false, "metadata": {}},
+          {"name": "end_time", "type": "timestamp", "nullable": false, "metadata": {}},
+          {"name": "duration_sec", "type": "integer", "nullable": false, "metadata": {}},
+          {"name": "bytes_used", "type": "integer", "nullable": false, "metadata": {}},
+          {"name": "service_type", "type": "string", "nullable": false, "metadata": {}}
+        ]
+      },
+      "nullable": true,
+      "metadata": {}
+    },
+    {
+      "name": "network",
+      "type": {
+        "type": "struct",
+        "fields": [
+          {"name": "cell_id", "type": "string", "nullable": false, "metadata": {}},
+          {"name": "quality", "type": "string", "nullable": false, "metadata": {}}
+        ]
+      },
+      "nullable": true,
+      "metadata": {}
+    },
+    {
+      "name": "metadata",
+      "type": {
+        "type": "struct",
+        "fields": [
+          {"name": "generated_at", "type": "timestamp", "nullable": false, "metadata": {}},
+          {"name": "source", "type": "string", "nullable": false, "metadata": {}}
+        ]
+      },
+      "nullable": true,
+      "metadata": {}
+    }
+  ]
+}

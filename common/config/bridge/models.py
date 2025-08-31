@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -7,6 +9,8 @@ class KafkaSettings(BaseModel):
     topic_flat: str
     topic_error: str
     security_protocol: str = "PLAINTEXT"
+    starting_offsets: str = "latest"
+    max_offsets_per_trigger: int = 10000
 
 
 class ProducerTuning(BaseModel):
@@ -20,10 +24,9 @@ class ProducerTuning(BaseModel):
 
 class SparkSettings(BaseModel):
     checkpoint_dir: str
-    starting_offsets: str = "latest"
-    max_offsets_per_trigger: int = 10000
     watermark_minutes: int = 10
     window_minutes: int = 5
+    fail_on_data_loss: bool = True
 
 
 class PostgresSettings(BaseModel):
@@ -34,6 +37,17 @@ class PostgresSettings(BaseModel):
     user: str
     password: str
     jdbc_options: str = "stringtype=unspecified"
+
+
+class LoggingSettings(BaseModel):
+    config_path: str
+
+
+class SparkConfig(BaseModel):
+    kafka: KafkaSettings
+    spark: SparkSettings
+    postgres: PostgresSettings
+    logging: Optional[LoggingSettings] = None
 
 
 class GeneratorSettings(BaseModel):

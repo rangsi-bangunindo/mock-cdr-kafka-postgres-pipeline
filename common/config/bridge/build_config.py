@@ -95,6 +95,35 @@ def build_producer_config(out_dir: Path):
     render_template("logging.json.j2", {}, out_dir / "logging.json")
 
 
+def build_spark_config(out_dir: Path):
+    load_dotenv(PROJECT_ROOT / ".env")
+
+    context = {
+        "KAFKA_BROKER": require_env("KAFKA_BROKER"),
+        "KAFKA_TOPIC_RAW": require_env("KAFKA_TOPIC_RAW"),
+        "KAFKA_TOPIC_FLAT": require_env("KAFKA_TOPIC_FLAT"),
+        "KAFKA_TOPIC_ERROR": require_env("KAFKA_TOPIC_ERROR"),
+        "SPARK_CHECKPOINT_DIR": require_env("SPARK_CHECKPOINT_DIR"),
+        "SPARK_READ_STARTING_OFFSETS": require_env("SPARK_READ_STARTING_OFFSETS"),
+        "SPARK_MAX_OFFSETS_PER_TRIGGER": require_env("SPARK_MAX_OFFSETS_PER_TRIGGER"),
+        "SPARK_WATERMARK_MINUTES": require_env("SPARK_WATERMARK_MINUTES"),
+        "SPARK_WINDOW_MINUTES": require_env("SPARK_WINDOW_MINUTES"),
+        "POSTGRES_HOST": require_env("POSTGRES_HOST"),
+        "POSTGRES_PORT": require_env("POSTGRES_PORT"),
+        "POSTGRES_DB": require_env("POSTGRES_DB"),
+        "POSTGRES_DB_SCHEMA": require_env("POSTGRES_DB_SCHEMA"),
+        "POSTGRES_USER": require_env("POSTGRES_USER"),
+        "POSTGRES_PASSWORD": require_env("POSTGRES_PASSWORD"),
+        "POSTGRES_JDBC_OPTIONS": os.getenv(
+            "POSTGRES_JDBC_OPTIONS", "stringtype=unspecified"
+        ),
+    }
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    render_template("spark.yml.j2", context, out_dir / "spark.yml")
+    render_template("logging.json.j2", {}, out_dir / "logging.json")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -109,8 +138,10 @@ def main():
         build_generator_config(out_dir)
     elif args.service == "producer":
         build_producer_config(out_dir)
+    elif args.service == "spark":
+        build_spark_config(out_dir)
     else:
-        raise NotImplementedError(f"Service {args.service} not yet supported")
+        raise NotImplementedError(f"Unsupported service: {args.service}")
 
 
 if __name__ == "__main__":

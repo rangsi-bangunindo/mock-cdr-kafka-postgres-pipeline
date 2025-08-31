@@ -36,9 +36,18 @@ htmlcov/
 .env.local
 .env.*.local
 
+# Generated configs
+generated-config/
+
+# Spark checkpoints and warehouse
+spark-checkpoints/
+spark-warehouse/
+
 # Data / DB
 *.db
 *.sqlite3
+db/data/
+db/migrations/__pycache__/
 
 # Distribution / Packaging
 build/
@@ -47,3 +56,4 @@ dist/
 
 # Docker
 *.pid
+docker-compose.override.yml

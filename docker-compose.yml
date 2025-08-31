@@ -50,3 +50,51 @@ services:
       - ./generated-config/generator:/opt/app/config
     ports:
       - "8000:8000"
+
+  topic-setup:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: cdr-topic-setup
+    depends_on:
+      - kafka
+    volumes:
+      - ./scripts:/scripts
+    entrypoint: ["sh", "-c", "/scripts/topic-setup.sh"]
+
+  spark-job:
+    build:
+      context: .
+      dockerfile: services/spark_job/Dockerfile
+    container_name: cdr-spark-job
+    depends_on:
+      - kafka
+      - db
+      - topic-setup
+    env_file: .env
+    command: >
+      bash -c "
+        /scripts/wait-for-topics.sh &&
+        python -m common.config.bridge.build_config --service spark --out /opt/app/config &&
+        python -m services.spark_job.main
+      "
+    volumes:
+      - ./common:/opt/app/common:ro
+      - ./generated-config/spark:/opt/app/config
+      - ./spark-checkpoints:/spark-checkpoints
+      - ./scripts:/scripts:ro
+
+  db:
+    image: postgres:15
+    container_name: cdr-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+  spark-checkpoints:

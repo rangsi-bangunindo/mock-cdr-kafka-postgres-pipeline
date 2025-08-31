@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual envs
+.venv/
+env/
+venv/
+ENV/
+
+# Logs, outputs, checkpoints
+*.log
+*.out
+*.err
+spark-checkpoints/
+spark-warehouse/
+
+# Local db files
+*.db
+*.sqlite3
+db/data/
+
+# Generated configs (mounted at runtime)
+generated-config/
+
+# Git and CI/CD
+.git/
+.gitattributes
+.gitignore
+.pre-commit-config.yaml
+
+# IDE / Editor
+.vscode/
+.idea/
+*.iml
+
+# Docker
+Dockerfile*
+docker-compose.override.yml
