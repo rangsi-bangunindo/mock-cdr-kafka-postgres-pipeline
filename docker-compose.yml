@@ -71,13 +71,12 @@ services:
       - topic-setup
     env_file: .env
     command: >
-      bash -c "
+      sh -c "
         /scripts/wait-for-topics.sh &&
         python -m common.config.bridge.build_config --service spark --out /opt/app/config &&
         python -m services.spark_job.main
       "
     volumes:
-      - ./common:/opt/app/common:ro
       - ./generated-config/spark:/opt/app/config
       - ./spark-checkpoints:/spark-checkpoints
       - ./scripts:/scripts:ro
@@ -85,15 +84,30 @@ services:
   db:
     image: postgres:15
     container_name: cdr-db
+    restart: always
     environment:
+      POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
-    volumes:
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - db_data:/var/lib/postgresql/data
+
+  migrate:
+    build:
+      context: .
+      dockerfile: db/Dockerfile
+    container_name: cdr-db-migrate
+    depends_on:
+      - db
+    env_file: .env
+    command: >
+      sh -c "
+        wait-for-it.sh db:5432 --
+        alembic upgrade head
+      "
 
 volumes:
   db_data:

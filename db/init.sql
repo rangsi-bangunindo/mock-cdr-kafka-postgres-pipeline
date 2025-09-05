@@ -1,0 +1,2 @@
+-- Initialize database roles, extensions, or seed data
+-- Schema creation handled by Alembic migrations

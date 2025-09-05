@@ -5,7 +5,7 @@ spark:
   checkpoint_dir: "{{ SPARK_CHECKPOINT_DIR }}"
   watermark_minutes: "{{ SPARK_WATERMARK_MINUTES }}"
   window_minutes: "{{ SPARK_WINDOW_MINUTES }}"
-  fail_on_data_loss: {{ SPARK_FAIL_ON_DATA_LOSS | default(false) }}
+  fail_on_data_loss: {{ SPARK_FAIL_ON_DATA_LOSS | default(true) | lower }}
 
 kafka:
   bootstrap_servers: "{{ KAFKA_BROKER }}"

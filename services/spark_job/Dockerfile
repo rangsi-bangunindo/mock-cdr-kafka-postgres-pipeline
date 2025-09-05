@@ -23,9 +23,10 @@ RUN apt-get update && apt-get install -y curl \
     && apt-get purge -y curl && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy whole services tree and common (preserve package imports)
-COPY services /opt/app/services
-COPY common /opt/app/common
+# Copy the whole repo (keep directory structure)
+COPY . .
+
+# Ensure wait-for-it.sh is executable inside the image
 COPY scripts/wait-for-it.sh /usr/local/bin/wait-for-it.sh
 
 # Ensure wait-for-it.sh works in Linux
